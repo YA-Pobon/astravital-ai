@@ -1,0 +1,10 @@
+*.mp4
+*.mkv
+*.mov
+*.avi
+supabase/
+.env*
+.git
+.agents
+README.md
+DEPLOYMENT.md

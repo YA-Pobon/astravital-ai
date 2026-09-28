@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AstraVital AI - Intelligent Astronaut Health Monitoring & Decision Support Platform for NASA Space Apps Challenge 2026. Real-time biometrics, 3D Digital Twin, Mars simulation, and AI clinical support.">
+  <meta name="keywords" content="NASA Space Apps, Astronaut Health, Digital Twin, Space Medicine, Mars Mission, Biometric Telemetry, Three.js">
+  <title>AstraVital AI | Intelligent Astronaut Health & Decision Support</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- External High-Performance Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Futuristic Scanline & CRT Screen Effect -->
+  <div class="scanline-overlay"></div>
+
+  <!-- Red Emergency Flashing HUD Screen Border -->
+  <div id="emergency-hud-border" class="emergency-hud-border"></div>
+
+  <!-- ==============================================================================
+       MASTER MISSION CONTROL NAVIGATION HEADER
+       ============================================================================== -->
+  <header class="master-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo-icon">🛰️</div>
+      <div class="brand-text">
+        <h1>AstraVital AI</h1>
+        <div class="brand-tag">NASA SPACE APPS 2026 • MISSION MEDICINE OS</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-container">
+      <ul class="nav-tabs">
+        <li><button class="nav-tab-btn active" data-view="hero"><span>🚀</span> Home & 3D</button></li>
+        <li><button class="nav-tab-btn" data-view="dashboard"><span>📊</span> Telemetry</button></li>
+        <li><button class="nav-tab-btn" data-view="digital-twin"><span>🧬</span> Digital Twin</button></li>
+        <li><button class="nav-tab-btn" data-view="astra-ai"><span>🤖</span> Astra AI</button></li>
+        <li><button class="nav-tab-btn" data-view="mars-sim"><span>🔴</span> Mars Sim</button></li>
+        <li><button class="nav-tab-btn" data-view="wearables"><span>⌚</span> Wearables</button></li>
+        <li><button class="nav-tab-btn" data-view="space-weather"><span>☀️</span> Space Weather</button></li>
+        <li><button class="nav-tab-btn" data-view="mental-wellness"><span>🧠</span> Wellness</button></li>
+        <li><button class="nav-tab-btn" data-view="mission-control"><span>📡</span> Wall Display</button></li>
+      </ul>
+    </nav>
+
+    <!-- Header Actions & Mission Clock -->
+    <div class="header-actions">
+      <div class="mission-clock font-mono">
+        <span class="clock-live-dot"></span>
+        <span id="mission-master-clock">MET SOL 142 • 14:28:44 UTC</span>
+      </div>
+
+      <!-- User Role Selector Dropdown -->
+      <select id="user-role-select" class="role-selector" title="Switch Operating Role">
+        <option value="flight_surgeon" selected>Role: Flight Surgeon</option>
+        <option value="astronaut">Role: Astronaut (Crew)</option>
+        <option value="mission_control">Role: Mission Director</option>
+        <option value="admin">Role: System Admin</option>
+      </select>
+
+      <!-- Audio Synthesizer Toggle -->
+      <button id="btn-audio-toggle" class="audio-toggle-btn active" title="Toggle Telemetry Audio Synthesizer">
+        🔊
+      </button>
+
+      <!-- Emergency Red Alert Trigger Button -->
+      <button id="btn-emergency-modal-open" class="btn-emergency-trigger">
+        <span>🚨</span> EMERGENCY ALERT
+      </button>
+    </div>
+  </header>
+
+  <!-- ==============================================================================
+       MAIN APPLICATION CONTAINER
+       ============================================================================== -->
+  <main class="main-wrapper">
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 1: HERO & 3D CELESTIAL ORBITAL EXPLORER
+         -------------------------------------------------------------------------- -->
+    <section id="view-hero" class="view-section active">
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>● LIVE TELEMETRY STREAM</span> | DEEP SPACE NETWORK ACTIVE
+          </div>
+          <h2 class="hero-title">Protecting Human Life Beyond Earth</h2>
+          <p class="hero-subtitle">
+            AI-powered astronaut health monitoring, physiological digital twins, and autonomous clinical decision support engineered for long-duration Moon and Mars exploration.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="btn-primary" onclick="window.app.switchView('dashboard')">
+              <span>🚀</span> Launch Mission Dashboard
+            </button>
+            <button class="btn-secondary" onclick="window.app.switchView('digital-twin')">
+              <span>🧬</span> Explore 3D Digital Twin
+            </button>
+          </div>
+
+          <!-- Live Fleet Telemetry Status Strip -->
+          <div class="hero-telemetry-strip">
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">Active Missions</div>
+              <div class="hero-stat-value">3 Fleets</div>
+              <div style="font-size:0.75rem; color:#8E9DB8; font-family:'Share Tech Mono';">Ares IV • Artemis • ISS</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">Monitored Crew</div>
+              <div class="hero-stat-value">4 Astronauts</div>
+              <div style="font-size:0.75rem; color:var(--success-green); font-family:'Share Tech Mono';">100% Sensor Link</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">Deep Space Rad</div>
+              <div class="hero-stat-value text-purple">42.5 µSv/h</div>
+              <div style="font-size:0.75rem; color:#8E9DB8; font-family:'Share Tech Mono';">SPE Watch Nominal</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">AI Diagnostic Index</div>
+              <div class="hero-stat-value text-green">94.2%</div>
+              <div style="font-size:0.75rem; color:var(--accent-cyan); font-family:'Share Tech Mono';">Astra AI Active</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Earth, Mars, & Orbital Canvas -->
+        <div class="hero-3d-visual cyber-corners">
+          <div class="canvas-controls-overlay">
+            <button class="celestial-toggle-btn active" data-target="earth">Earth & ISS</button>
+            <button class="celestial-toggle-btn" data-target="mars">Mars & Ares IV</button>
+          </div>
+          <div id="three-hero-canvas"></div>
+          <div class="canvas-hud-info">
+            <div id="hud-target-name" style="font-weight:bold;">TARGET: EARTH (LEO & ARTEMIS)</div>
+            <div id="hud-orbital-alt">ISS ALTITUDE: 418 KM | INCLINATION: 51.6°</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 2: ASTRONAUT HEALTH DASHBOARD
+         -------------------------------------------------------------------------- -->
+    <section id="view-dashboard" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>📊</span> Astronaut Telemetry Command Center</h2>
+          <p>Real-time physiological streaming, automated anomaly detection, and multivariate clinical trends.</p>
+        </div>
+        <div class="section-actions">
+          <span style="font-family:'Share Tech Mono'; font-size:0.85rem; color:var(--accent-cyan);">
+            MONITORING: <strong id="active-crew-name-banner">Dr. Marcus Thorne (Atlas)</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Astronaut Crew Selector Strip -->
+      <div id="crew-selector-container" class="crew-selector-grid"></div>
+
+      <!-- AI Anomaly Detection Alerts Tray -->
+      <div id="anomaly-alerts-tray" style="margin-bottom: 1.5rem;"></div>
+
+      <!-- Core Vitals Metrics Grid -->
+      <div class="vitals-grid">
+        <!-- Heart Rate -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Heart Rate</span>
+            <span class="metric-icon">❤️</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-heart-rate" class="metric-num text-danger">86</span>
+            <span class="metric-unit">BPM</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▲ +4 bpm</span> • Rest Tachycardia
+          </div>
+        </div>
+
+        <!-- Oxygen Saturation -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">SpO2 Oxygen</span>
+            <span class="metric-icon">🫁</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-spo2" class="metric-num text-accent">95.8</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▼ -1.2%</span> • Mild Hypoxia
+          </div>
+        </div>
+
+        <!-- Blood Pressure -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Blood Pressure</span>
+            <span class="metric-icon">🩺</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-blood-pressure" class="metric-num">134/88</span>
+            <span class="metric-unit">mmHg</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>●</span> Pre-Hypertensive Shift
+          </div>
+        </div>
+
+        <!-- Body Temperature -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Core Temp</span>
+            <span class="metric-icon">🌡️</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-body-temp" class="metric-num">37.4</span>
+            <span class="metric-unit">°C</span>
+          </div>
+          <div class="metric-trend trend-nominal">
+            <span>●</span> Spaceflight Fever Nominal
+          </div>
+        </div>
+
+        <!-- Stress Score -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Stress Score</span>
+            <span class="metric-icon">⚡</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-stress" class="metric-num text-amber">68</span>
+            <span class="metric-unit">/100</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▲ +14</span> • Post-EVA Fatigue
+          </div>
+        </div>
+
+        <!-- Sleep Quality -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Sleep Score</span>
+            <span class="metric-icon">🌙</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-sleep" class="metric-num text-purple">61</span>
+            <span class="metric-unit">/100</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▼</span> REM Deficit (-45m)
+          </div>
+        </div>
+
+        <!-- Hydration Level -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Hydration</span>
+            <span class="metric-icon">💧</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-hydration" class="metric-num">88.0</span>
+            <span class="metric-unit">%</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▼ -4.0%</span> • Fluid Intake Low
+          </div>
+        </div>
+
+        <!-- Radiation Dose Rate -->
+        <div class="glass-panel metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Rad Dose Rate</span>
+            <span class="metric-icon">☢️</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-radiation" class="metric-num text-purple">49.2</span>
+            <span class="metric-unit">µSv/h</span>
+          </div>
+          <div class="metric-trend trend-warning">
+            <span>▲ SPE Wave</span> • Transit Corridor
+          </div>
+        </div>
+
+        <!-- Overall Health Index Score -->
+        <div class="glass-panel metric-card" style="border: 1px solid var(--accent-cyan);">
+          <div class="metric-top">
+            <span class="metric-label">Biometric Score</span>
+            <span class="metric-icon">🏆</span>
+          </div>
+          <div class="metric-value-wrap">
+            <span id="val-overall-score" class="metric-num text-green">73</span>
+            <span class="metric-unit">/100</span>
+          </div>
+          <div id="val-health-status" class="metric-trend trend-warning" style="font-weight:bold;">
+            STATUS: WARNING
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Split Layout -->
+      <div class="dashboard-split-layout">
+        <!-- Live Vitals Real-time Stream Graph -->
+        <div class="glass-panel cyber-corners">
+          <div class="chart-panel-header">
+            <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700;">
+              REAL-TIME VITALS TELEMETRY STREAM (ECG & SPO2)
+            </div>
+            <div class="chart-filter-pills">
+              <span class="filter-pill active">LIVE (1.2s)</span>
+              <span class="filter-pill">1 HOUR</span>
+              <span class="filter-pill">24 HOURS</span>
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="vitals-line-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Radar Multi-Biometric Balance Chart -->
+        <div class="glass-panel cyber-corners">
+          <div class="chart-panel-header">
+            <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700;">
+              PHYSIOLOGICAL RESILIENCE RADAR
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="biometric-radar-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Second Row of Charts -->
+      <div class="dashboard-split-layout">
+        <!-- Radiation Dosimetry Trends -->
+        <div class="glass-panel cyber-corners">
+          <div class="chart-panel-header">
+            <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700;">
+              CUMULATIVE MISSION DOSIMETRY & SOLAR FLARES
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="radiation-area-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Metabolic Energy & Calorie Allocation -->
+        <div class="glass-panel cyber-corners">
+          <div class="chart-panel-header">
+            <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700;">
+              METABOLIC EXPENDITURE BREAKDOWN
+            </div>
+          </div>
+          <div class="chart-body">
+            <canvas id="metabolic-doughnut-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 3: 3D DIGITAL TWIN SYSTEM
+         -------------------------------------------------------------------------- -->
+    <section id="view-digital-twin" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>🧬</span> Interactive 3D Astronaut Digital Twin</h2>
+          <p>Biomechanical avatar mapping microgravity organ stress, cephalad fluid shift, and bone demineralization.</p>
+        </div>
+        <div class="section-actions">
+          <span class="hero-badge">AstraSim v3.2 Neural Physics</span>
+        </div>
+      </div>
+
+      <div class="digital-twin-container">
+        <!-- 3D Hologram Avatar Viewport -->
+        <div class="glass-panel twin-viewport cyber-corners">
+          <div class="twin-scanner-line"></div>
+          <div class="twin-hud-overlay font-mono">
+            <div style="color:var(--accent-cyan); font-weight:bold;">ASTRONAUT DIGITAL TWIN: DR. M. THORNE</div>
+            <div style="font-size:0.75rem; color:#8E9DB8;">ROTATION: 360° INTERACTIVE • CLICK ANATOMICAL HOTSPOTS</div>
+          </div>
+
+          <div id="three-twin-canvas"></div>
+
+          <!-- Hotspot buttons -->
+          <div class="hotspot-selector-strip">
+            <button class="hotspot-btn active" data-hotspot="cardiac" onclick="window.digitalTwin3d.selectHotspot('cardiac')">
+              ❤️ Cardiac Hemodynamics
+            </button>
+            <button class="hotspot-btn" data-hotspot="brain" onclick="window.digitalTwin3d.selectHotspot('brain')">
+              🧠 Brain & SANS (Eye)
+            </button>
+            <button class="hotspot-btn" data-hotspot="spine" onclick="window.digitalTwin3d.selectHotspot('spine')">
+              🦴 Axial Spine
+            </button>
+            <button class="hotspot-btn" data-hotspot="femur" onclick="window.digitalTwin3d.selectHotspot('femur')">
+              🦵 Femur & Bone Loss
+            </button>
+            <button class="hotspot-btn" data-hotspot="lungs" onclick="window.digitalTwin3d.selectHotspot('lungs')">
+              🫁 Pulmonary / O2
+            </button>
+          </div>
+        </div>
+
+        <!-- Hotspot Clinical Diagnosis & Organ Stress Panel -->
+        <div class="glass-panel twin-analysis-panel cyber-corners">
+          <div>
+            <span id="twin-organ-name" style="font-family:'Share Tech Mono'; font-size:0.75rem; color:var(--accent-cyan); text-transform:uppercase;">
+              Left Ventricle & Myocardium
+            </span>
+            <h3 id="twin-panel-title" style="font-size:1.3rem; margin-top:0.25rem;">
+              Cardiovascular Hemodynamics
+            </h3>
+          </div>
+
+          <div class="organ-stress-item">
+            <div class="organ-stress-header">
+              <span style="color:#8E9DB8;">MICROGRAVITY ORGAN STRESS INDEX</span>
+              <span id="twin-stress-val" style="font-family:'Share Tech Mono'; font-weight:bold; color:var(--danger-red);">58% STRESS INDEX</span>
+            </div>
+            <div class="progress-track">
+              <div id="twin-stress-bar" class="progress-fill fill-red" style="width: 58%;"></div>
+            </div>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.35); border:1px solid var(--border-subtle); border-radius:8px; padding:1.1rem;">
+            <div style="font-family:'Share Tech Mono'; font-size:0.75rem; color:#8E9DB8; margin-bottom:0.4rem;">
+              CLINICAL PATHOPHYSIOLOGY OBSERVATION
+            </div>
+            <p id="twin-findings" style="font-size:0.92rem; line-height:1.55; color:#E2E8F0;">
+              Resting cardiac output elevated. Stroke volume down 8% due to blood volume contraction in microgravity. Left ventricular mass reduction risk index: Moderate.
+            </p>
+          </div>
+
+          <div style="background:rgba(0,229,255,0.08); border:1px solid var(--border-cyan); border-radius:8px; padding:1.1rem;">
+            <div style="font-family:'Share Tech Mono'; font-size:0.75rem; color:var(--accent-cyan); margin-bottom:0.4rem;">
+              AI COUNTERMEASURE PROTOCOL
+            </div>
+            <p id="twin-countermeasure" style="font-size:0.92rem; line-height:1.55; color:#FFFFFF;">
+              Prescribe 35 min on Cycle Ergometer with Vibration Isolation (CEVIS) at 75% VO2 peak, with 1.2L isotonic fluid loading prior to EVA.
+            </p>
+          </div>
+
+          <!-- Microgravity Physiological Metrics Table -->
+          <div style="font-family:'Share Tech Mono'; font-size:0.8rem; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; border-top:1px solid var(--border-subtle); padding-top:1rem;">
+            <div>
+              <span style="color:#546481; display:block;">CEPHALAD FLUID SHIFT:</span>
+              <span style="color:var(--accent-cyan); font-weight:bold;">+1,180 mL</span>
+            </div>
+            <div>
+              <span style="color:#546481; display:block;">BONE RESORPTION RATE:</span>
+              <span style="color:var(--warning-amber); font-weight:bold;">1.45% / 30 Days</span>
+            </div>
+            <div>
+              <span style="color:#546481; display:block;">SANS OCULAR STAGE:</span>
+              <span style="color:var(--warning-amber); font-weight:bold;">Stage 1 (Edema)</span>
+            </div>
+            <div>
+              <span style="color:#546481; display:block;">METABOLIC EXPENDITURE:</span>
+              <span style="color:#FFFFFF; font-weight:bold;">3,150 kcal/day</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 4: ASTRA AI CLINICAL ASSISTANT
+         -------------------------------------------------------------------------- -->
+    <section id="view-astra-ai" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>🤖</span> Astra AI Clinical Decision Support Engine</h2>
+          <p>Flight surgeon intelligent assistant equipped with NASA human research protocols, voice synthesis, and risk forecasting.</p>
+        </div>
+        <div class="section-actions">
+          <span style="font-family:'Share Tech Mono'; font-size:0.8rem; color:var(--success-green);">● INFERENCE MODEL ONLINE</span>
+        </div>
+      </div>
+
+      <div class="astra-ai-layout">
+        <!-- Chat Console -->
+        <div class="glass-panel chat-container cyber-corners">
+          <div class="chat-header">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="font-size:1.3rem;">🧠</span>
+              <div>
+                <h3 style="font-size:0.95rem;">Astra AI Decision Engine</h3>
+                <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:var(--accent-cyan);">TRAINED ON NASA SP-2020-5007 & BIO-ASTRONAUTICS</span>
+              </div>
+            </div>
+            <button class="filter-pill" onclick="window.astraAI.speakResponse('Astra AI medical decision assistant standing by. All life support channels monitored.')">
+              🔊 Test Speech Synth
+            </button>
+          </div>
+
+          <div id="chat-messages" class="chat-messages-area">
+            <div class="chat-bubble bubble-astra">
+              Greetings Flight Surgeon. I am Astra AI. I am continuously analyzing Dr. Marcus Thorne's biometrics and Ares IV space radiation dosimetry. We have detected resting sinus tachycardia (86 bpm) and elevated radiation flux (+18 µSv/h). How can I assist you with clinical diagnoses or mission countermeasures?
+            </div>
+          </div>
+
+          <!-- Quick Prompts Pill Tray -->
+          <div class="quick-prompts-tray">
+            <button class="quick-prompt-pill">Explain SANS ocular syndrome risk</button>
+            <button class="quick-prompt-pill">Recommend bone density countermeasures</button>
+            <button class="quick-prompt-pill">Analyze current radiation storm hazard</button>
+            <button class="quick-prompt-pill">Generate astronaut clinical status report</button>
+          </div>
+
+          <!-- Input Bar -->
+          <div class="chat-input-bar">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Ask Astra AI medical questions or type /report...">
+            <button id="chat-voice-btn" class="chat-voice-btn" title="Voice Input (Speech-to-Text)">🎙️</button>
+            <button id="chat-send-btn" class="chat-send-btn" title="Send Query">➤</button>
+          </div>
+        </div>
+
+        <!-- Clinical Guidelines & References Sidebar -->
+        <div class="glass-panel cyber-corners" style="padding: 1.5rem; display:flex; flex-direction:column; gap:1.25rem;">
+          <h3 style="font-size:1.05rem;">Space Medicine Guidelines</h3>
+
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:1rem; font-size:0.86rem;">
+            <strong style="color:var(--accent-cyan); display:block; margin-bottom:0.25rem;">NASA Standard: NASA-STD-3001</strong>
+            Space Flight Human-System Standard Vol 1: Crew Health. Governs permissible radiation thresholds and microgravity deconditioning standards.
+          </div>
+
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:1rem; font-size:0.86rem;">
+            <strong style="color:var(--highlight-purple); display:block; margin-bottom:0.25rem;">SANS Protocol (Neuro-Ocular)</strong>
+            Spaceflight Associated Neuro-ocular Syndrome manifests as optic disc edema, hyperopic shifts, and choroidal folds due to upward fluid shifts.
+          </div>
+
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle); border-radius:8px; padding:1rem; font-size:0.86rem;">
+            <strong style="color:var(--warning-amber); display:block; margin-bottom:0.25rem;">Space Radiation Permissible Exposure</strong>
+            NASA 600 mSv career limit designed to restrict Excess Relative Risk (ERR) of radiation-induced cancer mortality to < 3% with 95% confidence.
+          </div>
+
+          <div style="margin-top:auto; font-family:'Share Tech Mono'; font-size:0.75rem; color:#546481; text-align:center;">
+            SECURE FLIGHT MEDICINE AI TELEMETRY CHANNEL 1
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 5: MARS MISSION SIMULATION MODE
+         -------------------------------------------------------------------------- -->
+    <section id="view-mars-sim" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>🔴</span> Long-Duration Mars Mission Simulation</h2>
+          <p>Bio-mathematical predictive engine forecasting bone demineralization, radiation dosage, and mission readiness across multi-month interplanetary voyages.</p>
+        </div>
+        <div class="section-actions">
+          <span class="hero-badge">NASA HRP Predictive Model</span>
+        </div>
+      </div>
+
+      <div class="mars-sim-grid">
+        <!-- Controls Panel -->
+        <div class="glass-panel mars-control-panel cyber-corners">
+          <h3 style="font-size:1.1rem;">Simulation Parameters</h3>
+
+          <!-- Presets -->
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="filter-pill mars-preset-btn" data-days="30">30d Lunar</button>
+            <button class="filter-pill mars-preset-btn" data-days="90">90d Deep Space</button>
+            <button class="filter-pill mars-preset-btn active" data-days="180">180d Mars Transit</button>
+            <button class="filter-pill mars-preset-btn" data-days="365">1-Year Mars</button>
+            <button class="filter-pill mars-preset-btn" data-days="1000">1000d Full Voyage</button>
+          </div>
+
+          <!-- Mission Duration Slider -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Mission Flight Duration</span>
+              <span id="mars-duration-val" style="color:var(--accent-cyan); font-family:'Share Tech Mono'; font-weight:bold;">180 Days</span>
+            </div>
+            <input type="range" id="mars-duration-slider" class="sim-slider" min="30" max="1000" step="10" value="180">
+          </div>
+
+          <!-- Radiation Shielding Material -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Habitat Radiation Shielding Material</span>
+            </div>
+            <select id="mars-shielding-select" class="sim-select">
+              <option value="Aluminum_Baseline">Aluminum Hull (Baseline - 1.0x)</option>
+              <option value="Polyethylene_Composite" selected>Polyethylene Composite (0.68x Dose)</option>
+              <option value="Water_Wall_Active">Active Potable Water Wall (0.44x Dose)</option>
+              <option value="Regolith_Habitat">In-Situ Martian Regolith (0.28x Dose)</option>
+            </select>
+          </div>
+
+          <!-- Daily Exercise Countermeasure -->
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Daily ARED & Ergometer Exercise</span>
+              <span id="mars-exercise-val" style="color:var(--success-green); font-family:'Share Tech Mono'; font-weight:bold;">2.5 hrs/day</span>
+            </div>
+            <input type="range" id="mars-exercise-slider" class="sim-slider" min="0.5" max="4.0" step="0.5" value="2.5">
+          </div>
+
+          <!-- Nutritional & Medical Countermeasure -->
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-top:0.5rem;">
+            <input type="checkbox" id="mars-diet-check" checked style="accent-color:var(--accent-cyan); width:18px; height:18px;">
+            <label for="mars-diet-check" style="font-size:0.9rem; cursor:pointer;">
+              Enable Bisphosphonate & Vitamin D3 Bone Loss Prophylaxis
+            </label>
+          </div>
+        </div>
+
+        <!-- Simulation Forecast Results Panel -->
+        <div class="glass-panel mars-results-panel cyber-corners">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size:1.1rem;">Predicted Interplanetary Health Outcomes</h3>
+            <div>
+              <span style="font-family:'Share Tech Mono'; font-size:0.75rem; color:#8E9DB8;">MISSION READINESS SCORE: </span>
+              <span id="mars-readiness-score" style="font-family:'Orbitron'; font-size:1.4rem; font-weight:800; color:var(--success-green);">86%</span>
+            </div>
+          </div>
+
+          <!-- Highlight Metric Stats -->
+          <div class="sim-metric-highlight-grid">
+            <div class="sim-stat-box">
+              <div class="sim-stat-title">PROJECTED BONE LOSS</div>
+              <div id="mars-bone-loss" class="sim-stat-big text-amber">-5.8%</div>
+              <div style="font-size:0.72rem; color:#8E9DB8; font-family:'Share Tech Mono';">Mitigated by ARED</div>
+            </div>
+
+            <div class="sim-stat-box">
+              <div class="sim-stat-title">TOTAL RADIATION DOSE</div>
+              <div id="mars-rad-dose" class="sim-stat-big text-purple">195.8 mSv</div>
+              <div style="font-size:0.72rem; color:#8E9DB8; font-family:'Share Tech Mono';">Career Limit: 600 mSv</div>
+            </div>
+
+            <div class="sim-stat-box">
+              <div class="sim-stat-title">CARDIO ATROPHY RISK</div>
+              <div id="mars-cardio-risk" class="sim-stat-big text-danger">24% Risk</div>
+              <div style="font-size:0.72rem; color:#8E9DB8; font-family:'Share Tech Mono';">Left Ventricle Remodel</div>
+            </div>
+          </div>
+
+          <!-- Extra Risk Factors -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div style="background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px; font-family:'Share Tech Mono'; font-size:0.8rem;">
+              <span style="color:#546481; display:block;">SANS OCULAR COMPLICATION RISK:</span>
+              <span id="mars-sans-risk" style="color:var(--accent-cyan); font-weight:bold; font-size:1.1rem;">26% Risk</span>
+            </div>
+            <div style="background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px; font-family:'Share Tech Mono'; font-size:0.8rem;">
+              <span style="color:#546481; display:block;">CANCER EXCESS RELATIVE RISK (ERR):</span>
+              <span id="mars-cancer-risk" style="color:var(--warning-amber); font-weight:bold; font-size:1.1rem;">+0.78%</span>
+            </div>
+          </div>
+
+          <!-- Mission Trajectory Timeline Checkpoints -->
+          <div>
+            <div style="font-family:'Share Tech Mono'; font-size:0.78rem; color:var(--accent-cyan); margin-bottom:0.4rem;">
+              MISSION TRAJECTORY PHYSIOLOGICAL CHECKPOINTS:
+            </div>
+            <div id="mars-timeline-list" style="background:rgba(0,0,0,0.25); border-radius:8px; padding:0.75rem;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 6: WEARABLE SENSOR SIMULATOR
+         -------------------------------------------------------------------------- -->
+    <section id="view-wearables" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>⌚</span> Wearable Biosensor Telemetry Simulator</h2>
+          <p>Real-time emulation of astronaut smart garments, Lead-II electrocardiogram, pulse oximetry plethysmography, and dosimeter badges.</p>
+        </div>
+        <div class="section-actions">
+          <span style="font-family:'Share Tech Mono'; font-size:0.8rem; color:var(--success-green);">● BLE SENSORS PAIRED (5/5)</span>
+        </div>
+      </div>
+
+      <div class="wearable-grid">
+        <!-- Live ECG Canvas Waveform -->
+        <div class="glass-panel cyber-corners" style="padding: 1.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <div>
+              <h3 style="font-size:1rem;">High-Resolution ECG Lead II Waveform</h3>
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:var(--accent-cyan);">SAMPLING RATE: 250 HZ • P-Q-R-S-T COMPLEX</span>
+            </div>
+            <span id="ecg-mode-tag" style="font-family:'Share Tech Mono'; font-size:0.82rem; color:var(--success-green); font-weight:bold;">
+              RHYTHM: NOMINAL SINUS
+            </span>
+          </div>
+
+          <div class="ecg-canvas-wrapper">
+            <div class="ecg-grid-overlay"></div>
+            <canvas id="ecg-canvas"></canvas>
+            <div class="ecg-hud-readout">25 mm/s | 10 mm/mV</div>
+          </div>
+
+          <!-- Cardiac Rhythm Test Toggles -->
+          <div style="display:flex; gap:0.75rem; margin-top:1.25rem;">
+            <button class="filter-pill active" onclick="window.app.wearableSim.setCondition('NOMINAL')">Normal Sinus Rhythm</button>
+            <button class="filter-pill" onclick="window.app.wearableSim.setCondition('TACHYCARDIA')">Simulate Sinus Tachycardia (115 bpm)</button>
+            <button class="filter-pill" onclick="window.app.wearableSim.setCondition('HYPOXIA')">Simulate Oxygen Desaturation</button>
+          </div>
+        </div>
+
+        <!-- Sensor Status & Hardware Health -->
+        <div class="glass-panel cyber-corners" style="padding: 1.5rem; display:flex; flex-direction:column; gap:1.2rem;">
+          <h3 style="font-size:1.05rem;">Active Wearable Hardware</h3>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px;">
+            <div>
+              <strong style="display:block; font-size:0.9rem;">AstraBand Pro Smartwatch</strong>
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">Optical PPG, Skin Conductance, Gyro</span>
+            </div>
+            <div style="text-align:right; font-family:'Share Tech Mono'; font-size:0.75rem;">
+              <span style="color:var(--success-green);">BATTERY 94%</span><br>
+              <span style="color:var(--accent-cyan);">LINK 100%</span>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px;">
+            <div>
+              <strong style="display:block; font-size:0.9rem;">BioHarness 3 Chest Strap</strong>
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">3-Lead ECG, Respiration Inductance</span>
+            </div>
+            <div style="text-align:right; font-family:'Share Tech Mono'; font-size:0.75rem;">
+              <span style="color:var(--success-green);">BATTERY 88%</span><br>
+              <span style="color:var(--accent-cyan);">LINK 99.8%</span>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px;">
+            <div>
+              <strong style="display:block; font-size:0.9rem;">RadBadge Silicon Dosimeter</strong>
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">Semiconductor Micro-Dosimetry</span>
+            </div>
+            <div style="text-align:right; font-family:'Share Tech Mono'; font-size:0.75rem;">
+              <span style="color:var(--success-green);">BATTERY 99%</span><br>
+              <span style="color:var(--accent-cyan);">LINK 100%</span>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:6px;">
+            <div>
+              <strong style="display:block; font-size:0.9rem;">In-Ear Core Temp Sensor</strong>
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">Tympanic Infrared Thermometry</span>
+            </div>
+            <div style="text-align:right; font-family:'Share Tech Mono'; font-size:0.75rem;">
+              <span style="color:var(--success-green);">BATTERY 91%</span><br>
+              <span style="color:var(--accent-cyan);">LINK 100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 7: SPACE ENVIRONMENT INTELLIGENCE CENTER (NASA OPEN DATA)
+         -------------------------------------------------------------------------- -->
+    <section id="view-space-weather" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>☀️</span> Space Weather & Radiation Intelligence Center</h2>
+          <p>Live NASA DONKI space weather tracking, Coronal Mass Ejections (CME), Geomagnetic Kp-index, and astronaut shelter advisories.</p>
+        </div>
+        <div class="section-actions">
+          <span class="hero-badge">NASA DONKI & APOD Integrated</span>
+        </div>
+      </div>
+
+      <div class="dashboard-split-layout">
+        <!-- Space Weather Conditions -->
+        <div class="glass-panel cyber-corners" style="padding: 1.6rem; display:flex; flex-direction:column; gap:1.25rem;">
+          <h3 style="font-size:1.1rem;">Live Solar Particle Telemetry</h3>
+
+          <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem;">
+            <div style="background:rgba(0,0,0,0.35); padding:1rem; border-radius:8px;">
+              <div style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">SOLAR FLARE CLASS</div>
+              <div id="space-solar-flare" style="font-family:'Orbitron'; font-size:1.5rem; color:var(--warning-amber); margin-top:0.25rem;">
+                M4.2 Moderate
+              </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.35); padding:1rem; border-radius:8px;">
+              <div style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">SOLAR WIND SPEED</div>
+              <div id="space-solar-wind" style="font-family:'Orbitron'; font-size:1.5rem; color:var(--accent-cyan); margin-top:0.25rem;">
+                432.8 km/s
+              </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.35); padding:1rem; border-radius:8px;">
+              <div style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">GEOMAGNETIC KP-INDEX</div>
+              <div id="space-kp-index" style="font-family:'Orbitron'; font-size:1.5rem; color:var(--success-green); margin-top:0.25rem;">
+                Kp 3.8
+              </div>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.35); padding:1rem; border-radius:8px;">
+              <div style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">COSMIC RAY DOSE RATE</div>
+              <div id="space-cosmic-dose" style="font-family:'Orbitron'; font-size:1.5rem; color:var(--highlight-purple); margin-top:0.25rem;">
+                42.6 µSv/h
+              </div>
+            </div>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.35); border-left:3px solid var(--accent-cyan); padding:1rem; border-radius:4px;">
+            <div style="font-family:'Share Tech Mono'; font-size:0.75rem; color:var(--accent-cyan); margin-bottom:0.25rem;">
+              SPACE WEATHER ADVISORY SUMMARY
+            </div>
+            <p id="space-weather-summary" style="font-size:0.9rem; line-height:1.5; color:#CBD5E1;">
+              Coronal mass ejection (CME) shock front traveling at 680 km/s. Mars Transit corridor subject to secondary ionizing proton flux.
+            </p>
+          </div>
+
+          <div style="background:rgba(255,184,0,0.12); border:1px solid var(--warning-amber); padding:1rem; border-radius:8px;">
+            <div style="font-family:'Share Tech Mono'; font-size:0.75rem; color:var(--warning-amber); margin-bottom:0.25rem;">
+              ASTRONAUT SHELTER COUNTERMEASURE
+            </div>
+            <p id="space-shelter-recommendation" style="font-size:0.9rem; line-height:1.5; color:#FFFFFF;">
+              Storm shelter haven alert Level 2. Potable water tanks positioned toward solar vector.
+            </p>
+          </div>
+        </div>
+
+        <!-- NASA APOD Display & Impact on Human Biology -->
+        <div class="glass-panel cyber-corners" style="padding: 1.6rem; display:flex; flex-direction:column; gap:1.2rem;">
+          <h3 style="font-size:1.1rem;">NASA Imagery & Biological Impact</h3>
+
+          <div style="width:100%; height:220px; border-radius:8px; overflow:hidden; border:1px solid var(--border-subtle); position:relative;">
+            <img id="nasa-apod-img" src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80" alt="NASA Space" style="width:100%; height:100%; object-fit:cover;">
+            <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(5,8,22,0.85); padding:0.5rem 0.8rem; font-family:'Share Tech Mono'; font-size:0.75rem;">
+              <span id="nasa-apod-title" style="color:var(--accent-cyan); font-weight:bold;">Deep Space Trajectory Visualization</span> • <span id="nasa-apod-date">2026-09-24</span>
+            </div>
+          </div>
+
+          <div style="font-size:0.88rem; line-height:1.55; color:#CBD5E1;">
+            <strong style="color:#FFFFFF; font-family:'Rajdhani'; font-size:1rem; display:block; margin-bottom:0.25rem;">
+              How Deep Space Radiation Threatens Astronauts:
+            </strong>
+            Galactic Cosmic Rays (GCR) composed of high-energy iron, carbon, and helium nuclei penetrate standard spacecraft hulls, triggering double-strand DNA ionization breaks, micro-vascular endothelial damage, and long-term neuro-cognitive decay.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 8: MENTAL WELLNESS & COGNITIVE CENTER
+         -------------------------------------------------------------------------- -->
+    <section id="view-mental-wellness" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>🧠</span> Crew Mental Wellness & Cognitive Vigilance</h2>
+          <p>Psychological health tracking, isolation metrics, and real-time Psychomotor Vigilance Task (PVT) cognitive latency testing.</p>
+        </div>
+        <div class="section-actions">
+          <span class="hero-badge">Artemis Psych Protocol</span>
+        </div>
+      </div>
+
+      <div class="mental-wellness-layout">
+        <!-- Cognitive Reaction Time Test Box -->
+        <div class="glass-panel cyber-corners" style="padding: 1.6rem; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <h3 style="font-size:1.1rem; margin-bottom:0.35rem;">Psychomotor Vigilance Test (PVT)</h3>
+            <p style="font-size:0.86rem; color:#8E9DB8;">
+              Measures behavioral alertness, micro-sleep propensity, and cognitive exhaustion in confined microgravity.
+            </p>
+          </div>
+
+          <div id="cognitive-reaction-box" class="reaction-game-box">
+            <div id="cognitive-game-msg" style="font-family:'Orbitron'; font-size:1.15rem; font-weight:bold;">
+              CLICK HERE TO START TEST
+            </div>
+            <div id="cognitive-game-result"></div>
+          </div>
+
+          <div style="font-family:'Share Tech Mono'; font-size:0.75rem; color:#546481; text-align:center;">
+            CLICK WHEN THE BOX FLASHES GREEN • MEASURES REACTION LATENCY (MS)
+          </div>
+        </div>
+
+        <!-- Psychological Trends & Daily Check-in -->
+        <div class="glass-panel cyber-corners" style="padding: 1.6rem; display:flex; flex-direction:column; gap:1.25rem;">
+          <h3 style="font-size:1.1rem;">Psychological Status Overview</h3>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div style="background:rgba(0,0,0,0.3); padding:0.9rem; border-radius:6px;">
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">MOOD INDEX</span>
+              <div style="font-family:'Orbitron'; font-size:1.4rem; color:var(--accent-cyan); margin-top:0.2rem;">7.8 / 10</div>
+              <span style="font-size:0.72rem; color:var(--success-green); font-family:'Share Tech Mono';">Positive Resilient</span>
+            </div>
+            <div style="background:rgba(0,0,0,0.3); padding:0.9rem; border-radius:6px;">
+              <span style="font-family:'Share Tech Mono'; font-size:0.72rem; color:#8E9DB8;">ISOLATION STRESS</span>
+              <div style="font-family:'Orbitron'; font-size:1.4rem; color:var(--warning-amber); margin-top:0.2rem;">4.2 / 10</div>
+              <span style="font-size:0.72rem; color:#8E9DB8; font-family:'Share Tech Mono';">Monitored Range</span>
+            </div>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.35); border-radius:8px; padding:1rem;">
+            <strong style="color:var(--accent-cyan); font-family:'Rajdhani'; font-size:0.95rem; display:block; margin-bottom:0.35rem;">
+              AI Mental Wellness Feedback:
+            </strong>
+            <p style="font-size:0.88rem; line-height:1.5; color:#CBD5E1;">
+              "Dr. Thorne's acoustic voice spectrogram reflects mild vocal fatigue following 6-hour EVA communications. Recommended 30m Virtual Reality Earth forest immersion before sleep cycle."
+            </p>
+          </div>
+
+          <div>
+            <label style="font-family:'Share Tech Mono'; font-size:0.75rem; color:#8E9DB8; display:block; margin-bottom:0.4rem;">
+              ASTRONAUT LOG JOURNAL ENTRY:
+            </label>
+            <textarea class="chat-input" rows="2" style="width:100%; resize:none;" placeholder="Log subjective mental state, sensory experiences, or mission mood..."></textarea>
+            <button class="filter-pill" style="margin-top:0.5rem;" onclick="alert('Mental wellness log securely transmitted to Flight Surgeon database.')">Save Journal Entry</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------------
+         VIEW 9: MISSION CONTROL WALL DASHBOARD
+         -------------------------------------------------------------------------- -->
+    <section id="view-mission-control" class="view-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><span>📡</span> NASA Mission Control Wall Dashboard</h2>
+          <p>Fleet-wide multi-crew health status grid, active telemetry alarms triage, and real-time mission telemetry feed.</p>
+        </div>
+        <div class="section-actions">
+          <span class="hero-badge">HOUSTON COMM LINK ESTABLISHED</span>
+        </div>
+      </div>
+
+      <div class="mission-control-wall">
+        <!-- Continuous Ticker Bar -->
+        <div class="telemetry-ticker-bar">
+          <span class="ticker-badge">LIVE TELEMETRY TICKER</span>
+          <div class="ticker-track">
+            <div class="ticker-content">
+              ARES-IV MARS TRANSIT: SOL 142 • ALL CREW BIOSENSORS ONLINE • CDR VANCE: HEALTH SCORE 94/100 • DR. THORNE: HEALTH SCORE 73/100 (CARDIAC WARNING) • DR. ROSTOVA: 96/100 (ARTEMIS SHACKLETON BASE) • ENG. SATO: 86/100 (ISS EXP-74) • SOLAR WIND SPEED: 432 KM/S • DONKI M4.2 CME SHOCK FRONT MONITORED • DEEP SPACE NETWORK GOLDSTONE LINK NOMINAL
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Astronaut Master Status Grid -->
+        <div id="mc-astronaut-grid" class="mc-grid-status"></div>
+
+        <!-- Alerts & Anomalies Triage Center -->
+        <div class="glass-panel cyber-corners" style="padding: 1.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-size:1.1rem;">Active Telemetry Alerts & Space Hazards</h3>
+            <span style="font-family:'Share Tech Mono'; font-size:0.75rem; color:#8E9DB8;">TRIAGE QUEUE: PRIORITY DESCENDING</span>
+          </div>
+
+          <div id="mc-alerts-container"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================================================================
+       EMERGENCY RED ALERT MODAL
+       ============================================================================== -->
+  <div id="emergency-modal" class="modal-backdrop">
+    <div class="glass-panel modal-dialog cyber-corners" style="border: 2px solid var(--danger-red); box-shadow: 0 0 50px var(--danger-red-glow);">
+      <button class="modal-close-btn" onclick="window.missionControl.closeEmergencyModal()">✕</button>
+
+      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+        <span style="font-size:2rem;">🚨</span>
+        <div>
+          <h2 style="font-size:1.3rem; color:var(--danger-red);">EMERGENCY RED ALERT CONFIRMATION</h2>
+          <span style="font-family:'Share Tech Mono'; font-size:0.75rem; color:var(--accent-cyan);">NASA MEDICAL PROTOCOL MED-RED-04</span>
+        </div>
+      </div>
+
+      <p style="font-size:0.92rem; line-height:1.55; color:#FFFFFF; margin-bottom:1.25rem;">
+        Initiating Red Alert will sound the synthesized cockpit emergency klaxon, broadcast an immediate high-priority distress telemetry packet to Houston Mission Control, and activate the emergency life support checklist.
+      </p>
+
+      <div style="background:rgba(255,77,109,0.12); border:1px solid var(--danger-red); border-radius:8px; padding:1rem; margin-bottom:1.5rem; font-family:'Share Tech Mono'; font-size:0.8rem;">
+        <strong>AUTOMATED PROTOCOL CHECKLIST:</strong><br>
+        1. 100% Emergency O2 line purge<br>
+        2. Flight Surgeon direct voice uplink priority channel 1<br>
+        3. Automated vital telemetry dump to Earth DSN 70m dish<br>
+        4. Cabin bulkhead seal status verification
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:1rem;">
+        <button class="btn-secondary" onclick="window.missionControl.closeEmergencyModal()">
+          Cancel
+        </button>
+        <button id="btn-emergency-confirm-trigger" class="btn-primary" style="background:var(--danger-red); box-shadow: 0 0 25px var(--danger-red-glow);">
+          ⚡ EXECUTE RED ALERT PROTOCOL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Master Footer -->
+  <footer class="master-footer">
+    <div>
+      <strong>AstraVital AI</strong> — Intelligent Astronaut Health Monitoring & Decision Support Platform
+      <div style="font-size:0.75rem; color:#546481; margin-top:0.2rem;">
+        Built for NASA Space Apps Challenge 2026 • Category: Human Spaceflight & Astronaut Health
+      </div>
+    </div>
+    <div class="footer-nasa-tag">
+      MISSION TIME: SOL 142 • DEEP SPACE NETWORK ONLINE
+    </div>
+  </footer>
+
+  <!-- Application Logic Modules -->
+  <script src="js/audio-synthesizer.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/digital-twin-3d.js"></script>
+  <script src="js/charts-manager.js"></script>
+  <script src="js/anomaly-detector.js"></script>
+  <script src="js/mars-simulation.js"></script>
+  <script src="js/wearable-simulator.js"></script>
+  <script src="js/astra-ai.js"></script>
+  <script src="js/nasa-api.js"></script>
+  <script src="js/mission-control.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
