@@ -35,6 +35,7 @@ class AstraVitalApp {
     this.initNavigation();
     this.initRoleSelector();
     this.initCognitiveGame();
+    this.initExerciseSimulator();
 
     // Initialize 3D celestial hero scene
     if (window.CelestialVisualizer) {
@@ -505,6 +506,169 @@ class AstraVitalApp {
           `;
         }
       }
+    });
+  }
+
+   
+  // Physical Exercise Simulator
+  initExerciseSimulator() {
+    const typeEl = document.getElementById('exercise-type');
+    const startBtn = document.getElementById('exercise-start-btn');
+    const stopBtn = document.getElementById('exercise-stop-btn');
+
+    const currentEl = document.getElementById('exercise-current');
+    const repsEl = document.getElementById('exercise-reps');
+    const heartRateEl = document.getElementById('exercise-heart-rate');
+    const caloriesEl = document.getElementById('exercise-calories');
+    const resultEl = document.getElementById('exercise-result');
+
+    const telemetryStatusEl = document.getElementById('telemetry-exercise-status');
+    const telemetryRepsEl = document.getElementById('telemetry-exercise-reps');
+    const telemetryDurationEl = document.getElementById('telemetry-exercise-duration');
+    const telemetryHeartRateEl = document.getElementById('telemetry-exercise-heart-rate');
+    const telemetryCaloriesEl = document.getElementById('telemetry-exercise-calories');
+
+    if (
+      !typeEl ||
+      !startBtn ||
+      !stopBtn ||
+      !currentEl ||
+      !repsEl ||
+      !heartRateEl ||
+      !caloriesEl ||
+      !resultEl
+    ) {
+      return;
+    }
+
+    let isExercising = false;
+    let startTime = 0;
+    let timerInterval = null;
+    let reps = 0;
+    let calories = 0;
+
+    startBtn.addEventListener('click', () => {
+      if (isExercising) return;
+
+      isExercising = true;
+      startTime = Date.now();
+      reps = 0;
+      calories = 0;
+
+      const exerciseName = typeEl.options[typeEl.selectedIndex].text;
+
+      currentEl.innerText = exerciseName;
+      repsEl.innerText = '0';
+      heartRateEl.innerText = '90 BPM';
+      caloriesEl.innerText = '0 kcal';
+      resultEl.innerHTML = '';
+
+      // Update Exercise Telemetry Dashboard
+  
+
+        if (telemetryStatusEl) telemetryStatusEl.innerText = 'ACTIVE';
+        if (telemetryRepsEl) telemetryRepsEl.innerText = '0';
+        if (telemetryDurationEl) telemetryDurationEl.innerText = '0';
+        if (telemetryHeartRateEl) telemetryHeartRateEl.innerText = '90';
+        if (telemetryCaloriesEl) telemetryCaloriesEl.innerText = '0';
+
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      typeEl.disabled = true;
+
+      timerInterval = setInterval(() => {
+        const elapsedSeconds = Math.floor(
+          (Date.now() - startTime) / 1000
+        );
+
+        // Simulated repetitions
+        reps = Math.floor(elapsedSeconds / 3);
+
+        // Simulated heart rate
+        const heartRate = Math.min(
+          150,
+          90 + Math.floor(elapsedSeconds * 1.5)
+        );
+
+        // Estimated calories
+        calories = Math.round(elapsedSeconds * 0.12 * 10) / 10;
+
+        repsEl.innerText = reps;
+        heartRateEl.innerText = `${heartRate} BPM`;
+        caloriesEl.innerText = `${calories} kcal`;
+
+      // Live update to Telemetry Dashboard
+      if (telemetryRepsEl) telemetryRepsEl.innerText = reps;
+      if (telemetryDurationEl) telemetryDurationEl.innerText = elapsedSeconds;
+      if (telemetryHeartRateEl) telemetryHeartRateEl.innerText = heartRate;
+      if (telemetryCaloriesEl) telemetryCaloriesEl.innerText = calories;
+      }, 1000);
+    });
+
+    stopBtn.addEventListener('click', () => {
+      if (!isExercising) return;
+
+      isExercising = false;
+
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      const durationSeconds = Math.floor(
+        (Date.now() - startTime) / 1000
+      );
+
+      const minutes = Math.floor(durationSeconds / 60);
+      const seconds = durationSeconds % 60;
+
+      const durationText =
+        `${minutes}m ${seconds}s`;
+
+      currentEl.innerText = 'COMPLETED';
+
+      // Update Telemetry Dashboard after exercise
+      if (telemetryStatusEl) telemetryStatusEl.innerText = 'COMPLETED';
+      if (telemetryRepsEl) telemetryRepsEl.innerText = reps;
+      if (telemetryDurationEl) telemetryDurationEl.innerText = durationSeconds;
+      if (telemetryHeartRateEl) {
+          telemetryHeartRateEl.innerText = heartRateEl.innerText.replace(' BPM', '');
+        }
+      if (telemetryCaloriesEl) {
+          telemetryCaloriesEl.innerText = calories;
+        }
+
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      typeEl.disabled = false;
+
+      resultEl.innerHTML = `
+        <div style="
+          padding:0.8rem;
+          border:1px solid #546481;
+          border-radius:6px;
+          background:rgba(0,0,0,0.2);
+        ">
+          <strong>Exercise Session Complete</strong>
+          <div style="margin-top:0.4rem;">
+            Exercise: ${typeEl.options[typeEl.selectedIndex].text}
+          </div>
+          <div>
+            Duration: ${durationText}
+          </div>
+          <div>
+            Reps: ${reps}
+          </div>
+          <div>
+            Estimated Calories: ${calories} kcal
+          </div>
+          <div style="
+            margin-top:0.5rem;
+            color:#8E9DB8;
+            font-size:0.72rem;
+          ">
+            SIMULATION RESULT • Not a medical measurement
+          </div>
+        </div>
+      `;
     });
   }
 }

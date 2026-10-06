@@ -311,11 +311,115 @@
         </div>
       </div>
 
+      <!-- Physical Exercise Live Telemetry -->
+<div class="glass-panel cyber-corners" style="margin-top:1rem; padding:1.2rem;">
+  <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700; margin-bottom:0.8rem;">
+    🏃 PHYSICAL EXERCISE LIVE TELEMETRY
+  </div>
+
+  <div class="vitals-grid">
+
+    <!-- Exercise Status -->
+    <div class="glass-panel metric-card">
+      <div class="metric-top">
+        <span class="metric-label">Exercise Status</span>
+        <span class="metric-icon">🏃</span>
+      </div>
+      <div class="metric-value-wrap">
+        <span id="telemetry-exercise-status" class="metric-num text-accent">
+          READY
+        </span>
+      </div>
+      <div class="metric-trend trend-nominal">
+        ● Exercise Monitor
+      </div>
+    </div>
+
+    <!-- Exercise Reps -->
+    <div class="glass-panel metric-card">
+      <div class="metric-top">
+        <span class="metric-label">Exercise Reps</span>
+        <span class="metric-icon">🔄</span>
+      </div>
+      <div class="metric-value-wrap">
+        <span id="telemetry-exercise-reps" class="metric-num">
+          0
+        </span>
+        <span class="metric-unit">REPS</span>
+      </div>
+      <div class="metric-trend trend-nominal">
+        ● Live Count
+      </div>
+    </div>
+
+    <!-- Exercise Duration -->
+    <div class="glass-panel metric-card">
+      <div class="metric-top">
+        <span class="metric-label">Exercise Duration</span>
+        <span class="metric-icon">⏱️</span>
+      </div>
+      <div class="metric-value-wrap">
+        <span id="telemetry-exercise-duration" class="metric-num">
+          0
+        </span>
+        <span class="metric-unit">SEC</span>
+      </div>
+      <div class="metric-trend trend-nominal">
+        ● Session Time
+      </div>
+    </div>
+
+    <!-- Exercise Heart Rate -->
+    <div class="glass-panel metric-card">
+      <div class="metric-top">
+        <span class="metric-label">Exercise HR</span>
+        <span class="metric-icon">❤️</span>
+      </div>
+      <div class="metric-value-wrap">
+        <span id="telemetry-exercise-heart-rate" class="metric-num text-danger">
+          72
+        </span>
+        <span class="metric-unit">BPM</span>
+      </div>
+      <div class="metric-trend trend-warning">
+        ● Simulated
+      </div>
+    </div>
+
+    <!-- Exercise Calories -->
+    <div class="glass-panel metric-card">
+      <div class="metric-top">
+        <span class="metric-label">Exercise Calories</span>
+        <span class="metric-icon">🔥</span>
+      </div>
+      <div class="metric-value-wrap">
+        <span id="telemetry-exercise-calories" class="metric-num text-amber">
+          0
+        </span>
+        <span class="metric-unit">KCAL</span>
+      </div>
+      <div class="metric-trend trend-nominal">
+        ● Estimated
+      </div>
+    </div>
+
+  </div>
+
+  <div style="
+    margin-top:0.7rem;
+    font-family:'Share Tech Mono';
+    font-size:0.7rem;
+    color:#546481;
+  ">
+    SIMULATION ONLY • Exercise heart rate and calories are estimated values.
+  </div>
+</div>
+
       <!-- Charts Split Layout -->
       <div class="dashboard-split-layout">
         <!-- Live Vitals Real-time Stream Graph -->
         <div class="glass-panel cyber-corners">
-          <div class="chart-panel-header">
+          <div class="chart-panel-header">s
             <div style="font-family:'Orbitron'; font-size:0.95rem; font-weight:700;">
               REAL-TIME VITALS TELEMETRY STREAM (ECG & SPO2)
             </div>
@@ -894,6 +998,83 @@
             CLICK WHEN THE BOX FLASHES GREEN • MEASURES REACTION LATENCY (MS)
           </div>
         </div>
+        <!-- Physical Exercise Simulator -->
+<div class="glass-panel cyber-corners" style="padding:1.6rem; margin-top:1.25rem;">
+  <div>
+    <h3 style="font-size:1.1rem; margin-bottom:0.35rem;">
+      Physical Exercise Simulator
+    </h3>
+
+    <p style="font-size:0.86rem; color:#8E9DB8; margin-bottom:1rem;">
+      Simulated astronaut exercise monitoring for reps, duration, heart rate and calories.
+    </p>
+
+    <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1rem;">
+      <select id="exercise-type"
+        style="padding:0.65rem; background:#0b1220; color:#fff; border:1px solid #546481; border-radius:6px;">
+        <option value="SQUATS">SQUATS</option>
+        <option value="JUMPING_JACKS">JUMPING JACKS</option>
+        <option value="PUSH_UPS">PUSH-UPS</option>
+      </select>
+
+      <button id="exercise-start-btn"
+        style="padding:0.65rem 1rem; cursor:pointer;">
+        START EXERCISE
+      </button>
+
+      <button id="exercise-stop-btn"
+        style="padding:0.65rem 1rem; cursor:pointer;"
+        disabled>
+        STOP
+      </button>
+    </div>
+
+    <div id="exercise-simulator"
+      style="display:grid; grid-template-columns:repeat(4,1fr); gap:0.8rem;">
+
+      <div style="padding:1rem; background:rgba(0,0,0,0.25); border-radius:6px;">
+        <div style="color:#8E9DB8; font-size:0.72rem;">EXERCISE</div>
+        <div id="exercise-current"
+          style="font-family:'Orbitron'; margin-top:0.3rem;">
+          READY
+        </div>
+      </div>
+
+      <div style="padding:1rem; background:rgba(0,0,0,0.25); border-radius:6px;">
+        <div style="color:#8E9DB8; font-size:0.72rem;">REPS</div>
+        <div id="exercise-reps"
+          style="font-family:'Orbitron'; font-size:1.4rem; margin-top:0.3rem;">
+          0
+        </div>
+      </div>
+
+      <div style="padding:1rem; background:rgba(0,0,0,0.25); border-radius:6px;">
+        <div style="color:#8E9DB8; font-size:0.72rem;">HEART RATE</div>
+        <div id="exercise-heart-rate"
+          style="font-family:'Orbitron'; font-size:1.4rem; margin-top:0.3rem;">
+          72 BPM
+        </div>
+      </div>
+
+      <div style="padding:1rem; background:rgba(0,0,0,0.25); border-radius:6px;">
+        <div style="color:#8E9DB8; font-size:0.72rem;">CALORIES</div>
+        <div id="exercise-calories"
+          style="font-family:'Orbitron'; font-size:1.4rem; margin-top:0.3rem;">
+          0 kcal
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:0.8rem; font-family:'Share Tech Mono'; font-size:0.75rem; color:#546481;">
+      SIMULATION ONLY • Heart rate and calories are estimated values, not medical measurements.
+    </div>
+
+    <div id="exercise-result"
+      style="margin-top:0.8rem;">
+    </div>
+  </div>
+</div>
 
         <!-- Psychological Trends & Daily Check-in -->
         <div class="glass-panel cyber-corners" style="padding: 1.6rem; display:flex; flex-direction:column; gap:1.25rem;">
